@@ -121,6 +121,11 @@ class User {
     return result.rows;
   }
 
+  static async getAllSort() {
+    const result = await pool.query('SELECT * FROM users WHERE deleted_at IS NULL ORDER BY user_id DESC');
+    return result.rows;
+  }
+
   static async getById(id) {
     const result = await pool.query('SELECT * FROM users WHERE user_id = $1 AND deleted_at IS NULL', [id]);
     return result.rows[0];

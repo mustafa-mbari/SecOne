@@ -9,7 +9,17 @@ exports.getAllUsers = async (req, res, next) => {
     const users = await User.getAll();
     res.json(users);
   } catch (err) {
-    next(new AppError('Error fetching users', 500));
+    next(new AppError('Error fetching users', 500, err.message));
+  }
+};
+
+// ✅ Get all users sorted
+exports.getAllSort = async (req, res, next) => {
+  try {
+    const users = await User.getAllSort();
+    res.json(users);
+  } catch (err) {
+    next(new AppError('Error fetching users', 500, err.message));
   }
 };
 
