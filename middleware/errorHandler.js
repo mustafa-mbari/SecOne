@@ -1,21 +1,32 @@
-//errorHandler.js
-// Global error handling middleware
+const { NODE_ENV } = process.env;
 
+/**
+ * Global error handler middleware
+ * @param {Error} err - Error object
+ * @param {Request} req - Express request
+ * @param {Response} res - Express response
+ * @param {NextFunction} next - Next middleware
+ */
 module.exports = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
 
-  // Log the full error to the console
-  console.error('--- Error caught by middleware ---');
-  console.error('Message:', err.message);
-  console.error('Status Code:', statusCode);
-  console.error('Details:', err.details || 'No additional details');
-  console.error('Stack:', err.stack);
-  console.error('----------------------------------');
+  // Log full error in development
+  if (NODE_ENV === "development") {
+    console.error("--- ERROR HANDLER MIDDLEWARE ---");
+    console.error("Path:", req.path);
+    console.error("Status:", statusCode);
+    console.error("Message:", message);
+    console.error("Stack:", err.stack);
+    console.error("--------------------------------");
+  }
 
-  // Respond with structured JSON error
-  res.status(statusCode).json({
-    error: err.message,
-    details: err.details || null,
-    status: statusCode
-  });
+  // Prevent leaking sensitive data in production
+  const response = {
+    error: message,
+    status: statusCode,
+    ...(NODE_ENV === "development" && { stack: err.stack }), // Only show stack in dev
+  };
+
+  res.status(statusCode).json(response);
 };
