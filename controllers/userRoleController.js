@@ -2,7 +2,7 @@ const UserRole = require('../models/UserRole');
 const AppError = require('../utils/AppError');
 
 /**
- * تعيين دور للمستخدم
+ * Assign role of user
  */
 exports.assignRoleToUser = async (req, res, next) => {
   try {
@@ -15,20 +15,20 @@ exports.assignRoleToUser = async (req, res, next) => {
     const userRole = new UserRole({
       user_id,
       role_id,
-      assigned_by: req.user.user_id // المستخدم الحالي هو الذي يعين الدور
+      assigned_by: req.user.user_id // The current user is the one who assigns the role
     });
 
     const savedUserRole = await userRole.save();
 
     res.status(201).json({
       success: true,
-      message: 'تم تعيين الدور بنجاح',
+      message: 'Role assigned successfully',
       data: savedUserRole
     });
 
   } catch (err) {
     next(new AppError(
-      `فشل تعيين الدور: ${err.message}`,
+      `Role assignment failed: ${err.message}`,
       err.statusCode || 500,
       {
         operation: 'assignRoleToUser',
@@ -49,18 +49,18 @@ exports.removeRoleFromUser = async (req, res, next) => {
     const deletedUserRole = await UserRole.deleteByUserAndRole(user_id, role_id);
 
     if (!deletedUserRole) {
-      throw new AppError('لم يتم العثور على تعيين الدور', 404);
+      throw new AppError('Role assignment not found', 404);
     }
 
     res.json({
       success: true,
-      message: 'تم إزالة الدور بنجاح',
+      message: 'Role removed successfully',
       data: deletedUserRole
     });
 
   } catch (err) {
     next(new AppError(
-      `فشل إزالة الدور: ${err.message}`,
+      `Failed to remove role: ${err.message}`,
       err.statusCode || 500,
       {
         operation: 'removeRoleFromUser',
@@ -72,14 +72,14 @@ exports.removeRoleFromUser = async (req, res, next) => {
 };
 
 /**
- * الحصول على جميع أدوار مستخدم معين
+* Get all roles of a specific user
  */
 exports.getUserRoles = async (req, res, next) => {
   try {
     const roles = await UserRole.getByUserId(req.params.user_id);
     
     if (!roles || roles.length === 0) {
-      throw new AppError('لا توجد أدوار مسندة لهذا المستخدم', 404);
+      throw new AppError('There are no roles assigned to this user.', 404);
     }
 
     res.json({
@@ -90,7 +90,7 @@ exports.getUserRoles = async (req, res, next) => {
 
   } catch (err) {
     next(new AppError(
-      `فشل جلب أدوار المستخدم: ${err.message}`,
+      `Failed to fetch user roles: ${err.message}`,
       err.statusCode || 500,
       {
         operation: 'getUserRoles',
@@ -101,14 +101,14 @@ exports.getUserRoles = async (req, res, next) => {
 };
 
 /**
- * الحصول على جميع المستخدمين لدور معين
- */
+* Get all users for a specific role 
+*/
 exports.getUsersWithRole = async (req, res, next) => {
   try {
     const users = await UserRole.getByRoleId(req.params.role_id);
     
     if (!users || users.length === 0) {
-      throw new AppError('لا يوجد مستخدمين بهذا الدور', 404);
+      throw new AppError('There are no users with this role', 404);
     }
 
     res.json({
@@ -119,7 +119,7 @@ exports.getUsersWithRole = async (req, res, next) => {
 
   } catch (err) {
     next(new AppError(
-      `فشل جلب المستخدمين بالدور: ${err.message}`,
+      `Failed to fetch users by role: ${err.message}`,
       err.statusCode || 500,
       {
         operation: 'getUsersWithRole',
