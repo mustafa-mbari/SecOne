@@ -1,4 +1,4 @@
-// index.js
+// app.js
 
 const express = require('express');
 const errorHandler = require('./middleware/errorHandler');
@@ -26,11 +26,13 @@ app.get('/contact', (req, res) => {
 // ✅ مسارات المستخدمين
 app.use('/users', userRoutes);
 
-// ✅ ميدلوير 404 - Route Not Found
-app.use((req, res, next) => {
-  const err = new Error('Route not found');
-  err.statusCode = 404;
-  next(err);
+// Error handling (must be last)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.statusCode || 500).json({
+    status: 'error',
+    message: err.message
+  });
 });
 
 // ✅ ميدلوير معالجة الأخطاء (يجب أن يكون في النهاية)

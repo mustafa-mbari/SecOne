@@ -2,11 +2,11 @@ const pool = require('../config/db');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
-class User {
   /**
    * Constructor for User model
    * @param {Object} userData - User data object
-   */
+  */
+  class User {
   constructor({
     user_id,
     username,
@@ -17,19 +17,21 @@ class User {
     phone,
     birth_date,
     gender,
-    profile_picture = 'default.jpg', // Default profile picture
+    profile_picture = 'default.jpg',
     address,
     city,
     country,
     postal_code,
-    language_preference = 'en', // Default language
-    timezone = 'UTC', // Default timezone
+    language_preference = 'en',
+    timezone = 'UTC',
     default_warehouse_id,
-    is_active = true, // Default active status
-    failed_login_attempts = 0, // Default failed attempts
-    account_locked = false, // Default lock status
+    is_active = true,
+    failed_login_attempts = 0,
+    account_locked = false,
     two_factor_auth_enabled = false,
     password_changed_at = new Date(),
+    verification_token = uuidv4(),
+    email_verified = false,
     created_by,
     updated_by,
     deleted_by,
@@ -38,38 +40,31 @@ class User {
     created_at,
     updated_at,
     deleted_at,
-    notes,
-    verification_token = uuidv4(), // Auto-generate verification token
-    email_verified = false, // Default verification status
-    password_reset_token,
-    password_reset_expires
+    notes
   }) {
     // Assign all properties
     this.user_id = user_id;
     this.username = username;
     this.password_hash = password_hash;
     this.email = email;
-    // ... (rest of property assignments)
+    this.first_name = first_name;
+    this.last_name = last_name;
+    // ... (assign all other properties)
     this.verification_token = verification_token;
     this.email_verified = email_verified;
-    this.password_reset_token = password_reset_token;
-    this.password_reset_expires = password_reset_expires;
   }
 
-  /**
-   * Save user to database
-   * @returns {Promise<Object>} - Created user object
-   */
   async save() {
     const query = `
       INSERT INTO users (
-        username, password_hash, email, first_name, last_name, 
+        username, password_hash, email, first_name, last_name,
         phone, birth_date, gender, profile_picture, address,
         city, country, postal_code, language_preference,
         timezone, default_warehouse_id, is_active,
-        verification_token, email_verified
+        verification_token, email_verified,
+        created_by
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
-               $11, $12, $13, $14, $15, $16, $17, $18, $19)
+               $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
       RETURNING *`;
     
     const values = [
@@ -91,11 +86,17 @@ class User {
       this.default_warehouse_id,
       this.is_active,
       this.verification_token,
-      this.email_verified
+      this.email_verified,
+      this.created_by
     ];
 
-    const result = await pool.query(query, values);
-    return result.rows[0];
+    try {
+      const result = await pool.query(query, values);
+      return result.rows[0];
+    } catch (err) {
+      console.error('Database error:', err);
+      throw err;
+    }
   }
 
   static async getAll() {
@@ -238,6 +239,20 @@ class User {
     const result = await pool.query(query, [token]);
     return result.rows[0];
   }
+
+  /**
+ * Check if user changed password after JWT was issued
+ */
+passwordChangedAfter(JWTTimestamp) {
+  if (this.password_changed_at) {
+    const changedTimestamp = parseInt(
+      this.password_changed_at.getTime() / 1000,
+      10
+    );
+    return JWTTimestamp < changedTimestamp;
+  }
+  return false;
+}
 
   // ... (keep existing methods like getAll, getById, update, delete)
 }
