@@ -2,6 +2,7 @@
 const { body, validationResult } = require('express-validator');
 const AppError = require('../utils/AppError');
 
+
 exports.validateUser = [
   body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters'),
   body('email').isEmail().normalizeEmail().withMessage('Invalid email address'),
@@ -97,4 +98,41 @@ exports.validateUserUpdate = [
     .isLength({ max: 50 }).withMessage('Last name too long'),
     
   handleValidationErrors
+];
+
+exports.validateRole = [
+  body('role_name')
+    .trim()
+    .notEmpty().withMessage('Role name is required')
+    .isLength({ min: 2, max: 50 }).withMessage('Must be 2-50 characters')
+    .matches(/^[a-zA-Z0-9 ]+$/).withMessage('Only alphanumeric characters allowed'),
+
+  body('description')
+    .optional()
+    .trim()
+    .isLength({ max: 255 }).withMessage('Maximum 255 characters'),
+
+  body('level')
+    .optional()
+    .isInt({ min: 0, max: 10 }).withMessage('Must be 0-10'),
+
+  body('is_active')
+    .optional()
+    .isBoolean().withMessage('Must be true/false'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const formattedErrors = errors.array().map(err => ({ 
+        field: err.path, 
+        message: err.msg 
+      }));
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: formattedErrors
+      });
+    }
+    next();
+  }
 ];

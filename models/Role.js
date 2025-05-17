@@ -1,6 +1,13 @@
 const pool = require('../config/db');
 
+/**
+ * Role model class for handling role operations
+ */
 class Role {
+  /**
+   * Role constructor
+   * @param {Object} roleData - Role data object
+   */
   constructor({
     role_id,
     role_name,
@@ -29,36 +36,64 @@ class Role {
     this.deleted_at = deleted_at;
   }
 
+  /**
+   * Save role to database
+   * @returns {Promise<Object>} Created role object
+   */
   async save() {
-    const result = await pool.query(
-      `INSERT INTO roles (
-        role_name, description, level, is_active, is_system_role,
-        created_by, updated_by, deleted_by, created_at, updated_at, deleted_at
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-      ) RETURNING *`,
-      [
-        this.role_name,
-        this.description,
-        this.level,
-        this.is_active,
-        this.is_system_role,
-        this.created_by,
-        this.updated_by,
-        this.deleted_by,
-        this.created_at,
-        this.updated_at,
-        this.deleted_at
-      ]
-    );
-    return result.rows[0];
+    try {
+      const result = await pool.query(
+        `INSERT INTO roles (
+          role_name, description, level, is_active, is_system_role,
+          created_by, updated_by, deleted_by, created_at, updated_at, deleted_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        RETURNING role_id, role_name, description, level, is_active, created_at`,
+        [
+          this.role_name,
+          this.description,
+          this.level,
+          this.is_active,
+          this.is_system_role,
+          this.created_by,
+          this.updated_by,
+          this.deleted_by,
+          this.created_at,
+          this.updated_at,
+          this.deleted_at
+        ]
+      );
+      return result.rows[0];
+    } catch (err) {
+      console.error('Error saving role:', err);
+      throw err;
+    }
   }
 
+  /**
+   * Get all active roles
+   * @returns {Promise<Array>} List of roles
+   */
   static async getAll() {
-    const result = await pool.query('SELECT * FROM roles WHERE deleted_at IS NULL');
-    return result.rows;
+    try {
+      const result = await pool.query(
+        `SELECT 
+          role_id, 
+          role_name, 
+          description,
+          level,
+          is_active,
+          created_at
+         FROM roles 
+         WHERE deleted_at IS NULL`
+      );
+      return result.rows;
+    } catch (err) {
+      console.error('Error fetching roles:', err);
+      throw err;
+    }
   }
 
+  
   static async getAllSort() {
     const result = await pool.query('SELECT * FROM roles WHERE deleted_at IS NULL ORDER BY role_id DESC');
     return result.rows;
@@ -94,6 +129,20 @@ class Role {
     );
     return result.rows[0];
   }
+
+  // In models/Role.js
+static async checkConnection() {
+  try {
+    await pool.query('SELECT 1');
+    console.log('✅ Database connection successful');
+    return true;
+  } catch (err) {
+    console.error('❌ Database connection failed:', err);
+    throw err;
+  }
 }
+}
+
+
 
 module.exports = Role;

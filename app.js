@@ -3,6 +3,7 @@
 const express = require('express');
 const errorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./routes/userRoutes');
+const roleRoutes = require('./routes/roleRoutes');
 
 const app = express();
 const PORT = 3000;
@@ -23,8 +24,13 @@ app.get('/contact', (req, res) => {
   res.send('For contact: email@example.com');
 });
 
-// ✅ مسارات المستخدمين
+// Roles
+app.use('/roles', roleRoutes);
+
+// Users
 app.use('/users', userRoutes);
+
+
 
 // Error handling (must be last)
 app.use((err, req, res, next) => {

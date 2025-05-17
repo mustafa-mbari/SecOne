@@ -1,39 +1,88 @@
+//controllers/roleController.js
+
 const Role = require('../models/Role');
 const AppError = require('../utils/AppError');
 
-// ✅ Get all roles
+/**
+ * Get all active roles
+ * @returns {Array} List of roles
+ */
 exports.getAllRoles = async (req, res, next) => {
   try {
     const roles = await Role.getAll();
-    res.json(roles);
+    
+    if (!roles || roles.length === 0) {
+      return res.status(200).json({
+        success: true,
+        count: 0,
+        message: 'No roles found',
+        data: []
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      count: roles.length,
+      data: roles
+    });
+    
   } catch (err) {
-    next(new AppError('Error fetching roles', 500, err.message));
+    console.error('RoleController.getAllRoles error:', {
+      error: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString()
+    });
+    
+    next(new AppError(
+      'Failed to fetch roles list',
+      500,
+      {
+        operation: 'getAllRoles',
+        errorDetails: err.message
+      }
+    ));
   }
 };
 
-// ✅ Get all roles sorted (DESC by role_id)
 exports.getAllRolesSort = async (req, res, next) => {
   try {
     const roles = await Role.getAllSort();
-    res.json(roles);
+    res.status(200).json({
+      success: true,
+      count: roles.length,
+      data: roles
+    });
   } catch (err) {
-    next(new AppError('Error fetching sorted roles', 500, err.message));
+    next(new AppError('Error fetching sorted roles', 500));
   }
 };
 
-// ✅ Create a new role
+/**
+ * Create a new role
+ * @param {Object} req.body - Role data
+ * @returns {Object} Created role
+ */
 exports.createRole = async (req, res, next) => {
   try {
+    // Validate required fields
+    if (!req.body.role_name) {
+      throw new AppError('Role name is required', 400);
+    }
+
     const role = new Role(req.body);
     const savedRole = await role.save();
 
     res.status(201).json({
-      message: `Role successfully created with ID: ${savedRole.role_id}`,
-      role: savedRole
+      success: true,
+      message: 'Role created successfully',
+      data: savedRole
     });
   } catch (err) {
-    console.error("Error during role creation: ", err);
-    next(new AppError('Error creating role', 500, err.message));
+    console.error('RoleController.createRole error:', err);
+    next(new AppError(
+      err.message || 'Error creating role',
+      err.statusCode || 500
+    ));
   }
 };
 
@@ -79,5 +128,47 @@ exports.deleteRole = async (req, res, next) => {
     res.json({ message: 'Role deleted successfully', deletedRole });
   } catch (err) {
     next(new AppError('Error deleting role', 500));
+  }
+};
+
+// controllers/roleController.js
+exports.createRoleLight = async (req, res, next) => {
+  try {
+    const { role_name, description, level, is_active, is_system_role, created_by } = req.body;
+
+    // Additional business logic validation
+    if (level > 10) {
+      throw new AppError('Maximum role level is 10', 400);
+    }
+
+    const role = new Role({
+      role_name,
+      description,
+      level: level || 0,
+      is_active: is_active !== false, // Default true
+      is_system_role: is_system_role || false,
+      created_by: req.user.user_id // From auth middleware
+    });
+
+    const savedRole = await role.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Role created successfully',
+      data: {
+        id: savedRole.role_id,
+        name: savedRole.role_name,
+        level: savedRole.level,
+        created_at: savedRole.created_at
+      }
+    });
+
+  } catch (err) {
+    console.error('Role creation error:', {
+      error: err.message,
+      body: req.body,
+      user: req.user
+    });
+    next(err);
   }
 };
