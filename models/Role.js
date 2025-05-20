@@ -141,7 +141,21 @@ static async checkConnection() {
     throw err;
   }
 }
+
+static async isActiveUser(userId) {
+    try {
+      const result = await pool.query(
+        'SELECT 1 FROM users WHERE user_id = $1 AND is_active = true LIMIT 1',
+        [userId]
+      );
+      return result.rowCount > 0;
+    } catch (err) {
+      console.error('isActiveUser error:', err);
+      return false;
+    }
+  }
 }
+
 
 
 

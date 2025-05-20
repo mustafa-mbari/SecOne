@@ -67,6 +67,12 @@ exports.createRole = async (req, res, next) => {
     // Validate required fields
     if (!req.body.role_name) {
       throw new AppError('Role name is required', 400);
+
+    } else if (!req.body.description) {
+      throw new AppError('Description is required', 400);
+
+    } else if (!(await Role.isActiveUser(req.body.created_by))) {
+      throw new AppError('User not found or not active', 400);
     }
 
     const role = new Role(req.body);
@@ -128,47 +134,5 @@ exports.deleteRole = async (req, res, next) => {
     res.json({ message: 'Role deleted successfully', deletedRole });
   } catch (err) {
     next(new AppError('Error deleting role', 500));
-  }
-};
-
-// controllers/roleController.js
-exports.createRoleLight = async (req, res, next) => {
-  try {
-    const { role_name, description, level, is_active, is_system_role, created_by } = req.body;
-
-    // Additional business logic validation
-    if (level > 10) {
-      throw new AppError('Maximum role level is 10', 400);
-    }
-
-    const role = new Role({
-      role_name,
-      description,
-      level: level || 0,
-      is_active: is_active !== false, // Default true
-      is_system_role: is_system_role || false,
-      created_by: req.user.user_id // From auth middleware
-    });
-
-    const savedRole = await role.save();
-
-    res.status(201).json({
-      success: true,
-      message: 'Role created successfully',
-      data: {
-        id: savedRole.role_id,
-        name: savedRole.role_name,
-        level: savedRole.level,
-        created_at: savedRole.created_at
-      }
-    });
-
-  } catch (err) {
-    console.error('Role creation error:', {
-      error: err.message,
-      body: req.body,
-      user: req.user
-    });
-    next(err);
   }
 };

@@ -2,7 +2,6 @@
 const { body, validationResult } = require('express-validator');
 const AppError = require('../utils/AppError');
 
-
 exports.validateUser = [
   body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters'),
   body('email').isEmail().normalizeEmail().withMessage('Invalid email address'),
@@ -74,6 +73,7 @@ exports.validateLogin = [
     
   handleValidationErrors
 ];
+
 
 // User update validation
 exports.validateUserUpdate = [

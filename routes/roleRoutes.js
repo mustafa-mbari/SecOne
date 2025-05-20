@@ -17,7 +17,6 @@ console.log('Controller methods:', {
 // Routes
 router.get('/', roleController.getAllRoles);
 router.post('/', validateRole, roleController.createRole);
-router.post('/light', validateRole, roleController.createRoleLight);
 router.get('/sort', roleController.getAllRolesSort);
 router.get('/:id', roleController.getRoleById);
 router.put('/:id', validateRole, roleController.updateRole);
