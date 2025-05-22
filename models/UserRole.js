@@ -1,3 +1,4 @@
+//models/UserRole.js
 const pool = require('../config/db');
 
 class UserRole {

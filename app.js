@@ -4,6 +4,8 @@ const express = require('express');
 const errorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
+const userRoleRoutes = require('./routes/userRoleRoutes');
+
 
 const app = express();
 const PORT = 3000;
@@ -23,6 +25,8 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
   res.send('For contact: email@example.com');
 });
+// UserRole
+app.use('/ur', userRoleRoutes);
 
 // Roles
 app.use('/roles', roleRoutes);

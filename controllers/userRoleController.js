@@ -1,5 +1,22 @@
+//controllers/userRoleController.js
+
 const UserRole = require('../models/UserRole');
 const AppError = require('../utils/AppError');
+
+
+// مسار GET لاسترجاع كل userRoles
+exports.getAllUserRole = async (req, res, next) => {
+  try {
+    const userRoles = await UserRole.getAll();
+    res.json({
+      success: true,
+      count: userRoles.length,
+      data: userRoles
+    });
+  } catch (err) {
+    next(new AppError(`Failed to fetch user roles: ${err.message}`, 500));
+  }
+};
 
 /**
  * Assign role of user
