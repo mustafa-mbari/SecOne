@@ -1,3 +1,4 @@
+// middleware/errorHandler.js
 const { NODE_ENV } = process.env;
 
 /**
