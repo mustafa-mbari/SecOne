@@ -33,14 +33,14 @@ class UserRole {
   }
 
   async save() {
-    const result = await pool.query(
+    const query =
       `INSERT INTO user_roles (
         user_id, role_id, is_active, expiry_date, assigned_by,
         created_by, updated_by, deleted_by, created_at, updated_at, deleted_at, notes
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
-      ) RETURNING *`,
-      [
+      ) RETURNING *`;
+      const values = [
         this.user_id,
         this.role_id,
         this.is_active,
@@ -53,9 +53,15 @@ class UserRole {
         this.updated_at,
         this.deleted_at,
         this.notes
-      ]
-    );
-    return result.rows[0];
+      ];
+
+    try {
+      const result = await pool.query(query, values);
+      return result.rows[0];
+    } catch (err) {
+      console.error('Database error:', err);
+      throw err;
+    }
   }
 
   static async getAll() {

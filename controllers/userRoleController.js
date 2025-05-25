@@ -29,17 +29,12 @@ exports.assignRoleToUser = async (req, res, next) => {
       throw new AppError('User ID and Role ID are required', 400);
     }
 
-    const userRole = new UserRole({
-      user_id,
-      role_id,
-      assigned_by: req.user.user_id // The current user is the one who assigns the role
-    });
-
+    const userRole = new UserRole(req.body);
     const savedUserRole = await userRole.save();
 
     res.status(201).json({
       success: true,
-      message: 'Role assigned successfully',
+      message: `Role assigned successfully - ID: ${savedUserRole.user_id}`,
       data: savedUserRole
     });
 
