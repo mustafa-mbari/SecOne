@@ -2,6 +2,7 @@
 
 const UserRole = require('../models/UserRole');
 const AppError = require('../utils/AppError');
+const { getUsernameById } = require('../services/userService');
 
 
 // مسار GET لاسترجاع كل userRoles
@@ -32,9 +33,13 @@ exports.assignRoleToUser = async (req, res, next) => {
     const userRole = new UserRole(req.body);
     const savedUserRole = await userRole.save();
 
+    // ✅ استرجاع اسم المستخدم بعد الحفظ
+    const usernameResult = await getUsernameById(savedUserRole.user_id);
+    const username = usernameResult.username;
+
     res.status(201).json({
       success: true,
-      message: `Role assigned successfully - ID: ${savedUserRole.user_id}`,
+      message: `Role assigned successfully, to user: ${username}`,
       data: savedUserRole
     });
 

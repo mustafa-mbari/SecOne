@@ -1,4 +1,6 @@
 // middleware/errorHandler.js
+
+const AppError = require('../utils/AppError');
 const { NODE_ENV } = process.env;
 
 /**
@@ -10,23 +12,28 @@ const { NODE_ENV } = process.env;
  */
 module.exports = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
+  const message = err.message || 'Internal Server Error';
+  const isOperational = err instanceof AppError || err.isOperational;
 
-  // Log full error in development
-  if (NODE_ENV === "development") {
-    console.error("--- ERROR HANDLER MIDDLEWARE ---");
-    console.error("Path:", req.path);
-    console.error("Status:", statusCode);
-    console.error("Message:", message);
-    console.error("Stack:", err.stack);
-    console.error("--------------------------------");
+  // Log error details only in development or for unexpected errors
+  if (NODE_ENV === 'development' || !isOperational) {
+    console.error('--- ERROR HANDLER MIDDLEWARE ---');
+    console.error('Time:', new Date().toISOString());
+    console.error('Path:', req.originalUrl);
+    console.error('Method:', req.method);
+    console.error('Status:', statusCode);
+    console.error('Message:', message);
+    if (err.details) console.error('Details:', err.details);
+    console.error('Stack:', err.stack);
+    console.error('--------------------------------');
   }
 
-  // Prevent leaking sensitive data in production
+  // Prepare clean response
   const response = {
+    success: false,
     error: message,
-    status: statusCode,
-    ...(NODE_ENV === "development" && { stack: err.stack }), // Only show stack in dev
+    ...(err.details && { details: err.details }),
+    ...(NODE_ENV === 'development' && { stack: err.stack }),
   };
 
   res.status(statusCode).json(response);
