@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="24872783-ae9a-4b3a-9597-464941d90cc0" activeEnvironment="Default" name="WMS" resourceRoot="${projectDir}" soapui-version="5.8.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="e24c4a2b-e1a0-42c1-913f-3a442a85e8af" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:3000" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://localhost:3000</con:endpoint></con:endpoints><con:resource name="Users" path="/users/15" id="5d5650f3-71f8-40c2-aa4f-80c5e01b5418"><con:settings/><con:parameters/><con:method name="Users Routes" id="52970688-4dda-40ba-81ed-4e1922a20524" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>201 200</con:status><con:params/><con:element xmlns:user="http://localhost/users">user:Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404 500 400</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>500 404 400 401</con:status><con:params/><con:element xmlns:user="http://localhost/users">user:Fault</con:element></con:representation><con:request name="Add user" id="887b83eb-6502-4e67-975c-c8773cfa8d26" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "username": "Test123",
+  "password_hash": "123456hashedTest1",
+  "email": "Test123@example.com",
+  "first_name": "Test",
+  "last_name": "post"
+}
+</con:request><con:originalUri>http://localhost/users</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="" value="" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry/></con:parameterOrder></con:request><con:request name="Delete user" id="ab446197-a56a-407a-8975-94e48da4085e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/users</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry/></con:parameterOrder></con:request><con:request name="Update user" id="76072f92-8019-49cf-88a8-f932e79d4906" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "username": "xxxxName",
+  "password_hash": "newpasswordhash",
+  "email": "newemail@example.com",
+  "first_name": "John",
+  "last_name": "Doe",
+  "phone": "123456789",
+  "birth_date": "1990-01-01", 
+  "gender": "Male",
+  "profile_picture": "path_to_new_picture.jpg",
+  "address": "123 New Street",
+  "city": "New City",
+  "country": "Country Name",
+  "postal_code": "12345",
+  "language_preference": "English",
+  "timezone": "UTC+1",
+  "default_warehouse_id": 2,
+  "is_active": true,
+  "updated_by": 1
+}
+</con:request><con:originalUri>http://localhost/users/11</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request><con:request name="Full Create User" id="070c8f44-9bdc-4d07-abda-0d17f84d6510" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "username": "Crestiano Ronaldo",
+  "password_hash": "newpasswordhash",
+  "email": "sdgsgsdg@example.com",
+  "first_name": "Crestiano",
+  "last_name": "Ronaldo",
+  "phone": "123456789",
+  "birth_date": "1990-01-01",
+  "gender": "Male",
+  "profile_picture": "path_to_picture.jpg",
+  "address": "123 New Street",
+  "city": "New City",
+  "country": "Country Name",
+  "postal_code": "12345",
+  "language_preference": "English",
+  "timezone": "UTC+1",
+  "default_warehouse_id": 2,
+  "is_active": true,
+  "account_locked": false,
+  "two_factor_auth_enabled": false,
+  "verification_token": "1235",
+  "created_by": 3,
+  "created_at": "2025-05-13T12:00:00Z",
+  "notes": "This is a new user"
+}
+</con:request><con:originalUri>http://localhost/users</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request><con:request name="Get all sorted" id="43a09fa2-cbb4-4fe3-bc14-d7af44ccf409" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/users/sort</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Method 2" id="c6838c16-0db6-4533-bf55-e1193cffadc4" method="POST"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>500 404 400</con:status><con:params/><con:element xmlns:user="http://localhost/users/">user:Fault</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>201</con:status><con:params/><con:element xmlns:user="http://localhost/users/">user:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Add user full" id="360a175b-f39b-49c7-a187-08e116264351" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "username": "johnDoe1231",
+  "password_hash": "SecurePass123",
+  "email": "cr7s1@example.com",
+  "first_name": "manee",
+  "last_name": "fpoof",
+  "phone": "123456789",
+  "birth_date": "1990-01-01",
+  "gender": "Male",
+  "profile_picture": "path_to_picture.jpg",
+  "address": "123 New Street",
+  "city": "New City",
+  "country": "Country Name",
+  "postal_code": "12345",
+  "language_preference": "English",
+  "timezone": "UTC+1",
+  "default_warehouse_id": 2,
+  "is_active": true,
+  "account_locked": false,
+  "two_factor_auth_enabled": false,
+  "verification_token": "1235",
+  "created_by": 3,
+  "created_at": "2025-05-13T12:00:00Z",
+  "notes": "This is a new user"
+}
+</con:request><con:originalUri>http://localhost/users/</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete user" id="a76f7757-3979-4300-88c8-7845248d6073" method="DELETE"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>400 500</con:status><con:params/><con:element xmlns:log="http://localhost/api/v1/auth/login">log:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:log="http://localhost/api/v1/auth/login">log:Response</con:element></con:representation><con:request name="Delete user" id="81a9f6a8-bfc6-4cac-ad84-3800bcb7ddb5" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/api/v1/auth/login</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="Role" path="/roles/" id="0b4b0822-fe62-4227-9720-1846b30004aa"><con:settings/><con:parameters/><con:method name="Add new role" id="8da98139-003f-438b-92f2-4fbc10871404" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200 201</con:status><con:params/><con:element xmlns:rol="http://localhost/roles">rol:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>500 400</con:status><con:params/><con:element xmlns:rol="http://localhost/roles">rol:Fault</con:element></con:representation><con:request name="add new role" id="38b7bdaf-c8e8-4d3c-8483-9a2ac6aea012" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "role_name": "Managger2",
+  "description": "Can put, update and delete users.",
+  "level": 1,
+  "is_active": true,
+  "is_system_role": true,
+  "created_by": 3
+}
+</con:request><con:originalUri>http://localhost/roles</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:request></con:method><con:method name="Get roles" id="5d5e15ce-8c7c-410d-af25-81b8e233f741" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:rol="http://localhost/roles/">rol:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>500 400</con:status><con:params/><con:element xmlns:rol="http://localhost/roles/">rol:Fault</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Get all roles" id="847e8a6c-e517-48ac-99aa-42662b411aac" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/roles/</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:request></con:method><con:method name="get role by ID" id="45d321ec-998d-4a25-bb65-116d0d431540" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:rol="http://localhost/roles/">rol:Response</con:element></con:representation><con:request name="role by ID" id="4080f730-9dfe-4393-a876-a9ae82931cf2" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/roles/</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:request></con:method><con:method name="Update a role" id="272c13fd-fe06-4aa4-886e-0f10333a1958" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/roles/1">ns:Response</con:element></con:representation><con:request name="update a role" id="06936f7a-131a-4205-9033-99f272219e6e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "role_name": "Worker",
+  "description": "Can show some data.",
+  "level": 4,
+  "is_active": true,
+  "is_system_role": false,
+  "created_by": 3
+}</con:request><con:originalUri>http://localhost/roles/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="UserRole" path="/ur" id="92cf412e-33ce-411c-85c0-d7d722f30b68"><con:settings/><con:parameters/><con:method name="Add UR" id="9a62169f-c1ac-433a-9381-c9f38cb22825" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:ur="http://localhost/ur">ur:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>201</con:status><con:params/><con:element xmlns:ur="http://localhost/ur">ur:Response</con:element></con:representation><con:request name="Request 1" id="1e213c75-7d44-4e05-9cc7-514df9864ef8" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+  "user_id": 5,
+  "role_id": 3,
+  "assigned_by": 3,
+  "created_by": 3,
+  "expiry_date": "2025-12-31",
+  "notes": "Temporary role assignment - worker"
+}</con:request><con:originalUri>http://localhost/ur</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Update UR" id="1761495a-9921-4d52-a352-613ecf9dfaac" method="PUT"><con:settings/><con:parameters/><con:request name="Request 1" id="40a05d4d-f0bb-4078-b7de-a4cc8398d1b9" mediaType="application/json" postQueryString="false"><con:settings/><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Get all UR" id="d999629d-1654-491c-a63d-3e32afcf6ce7" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ur="http://localhost/ur">ur:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:ur="http://localhost/ur">ur:Fault</con:element></con:representation><con:request name="Request 1" id="e6e16ce0-9a27-45ba-b9b0-d6a5401412aa" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/ur</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete UR" id="8327cc36-c539-4818-9c01-1275390b1d3b" method="DELETE"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/ur/11">ns:Response</con:element></con:representation><con:request name="Request 1" id="5fafe01e-ebd0-48a5-a1ad-caf03f0319ac" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/ur/11</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
